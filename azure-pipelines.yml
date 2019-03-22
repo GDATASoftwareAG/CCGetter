@@ -99,5 +99,5 @@ jobs:
         title: 'CCGetter Release'
         addChangeLog: false
         assets: |
-          $(System.ArtifactsDirectory)\linExe\CCGetter
-          $(System.ArtifactsDirectory)\winExe\CCGetter.exe
+          $(System.ArtifactsDirectory)\linExe\*
+          $(System.ArtifactsDirectory)\winExe\*.exe
