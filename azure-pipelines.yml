@@ -11,7 +11,6 @@ jobs:
     vmImage: 'windows-2019'
 
   steps:
-
     - powershell: choco install dotnetcore-sdk --pre
       displayName: Install .NET Core 3.0 preview
 
@@ -21,8 +20,14 @@ jobs:
     - powershell: cp .\src\CCGetter\bin\Release\netcoreapp3.0\win-x64\native\CCGetter.exe $(Build.ArtifactStagingDirectory)
       displayName: Copy CCGetter.exe to "Artifacts Staging Directory"
 
-- job: Build_Linux_Binary
+    - task: PublishBuildArtifacts@1
+      displayName: Publish Windows executable
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: winExe
 
+- job: Build_Linux_Binary
+  
   pool:
     vmImage: 'ubuntu-16.04'
 
@@ -30,7 +35,6 @@ jobs:
     dotnetUrl: 'https://download.visualstudio.microsoft.com/download/pr/35c9c95a-535e-4f00-ace0-4e1686e33c6e/b9787e68747a7e8a2cf8cc530f4b2f88/dotnet-sdk-3.0.100-preview3-010431-linux-x64.tar.gz'
 
   steps:
-
     - script: 'sudo apt install -y liblttng-ust0 libcurl3 libssl1.0.0 libkrb5-3 zlib1g libicu55 wget clang-3.9 libcurl4-openssl-dev zlib1g-dev libkrb5-dev'
       displayName: Install dependencies
 
@@ -49,3 +53,33 @@ jobs:
     - script: 'cp ./src/CCGetter/bin/Release/netcoreapp3.0/linux-x64/native/CCGetter $(Build.ArtifactStagingDirectory)'
       displayName: Copy CCGetter to "Artifacts Staging Directory"
 
+    - task: PublishBuildArtifacts@1
+      displayName: Publish Linux executable
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: linExe
+
+- job: Release_To_Github
+  dependsOn:
+  - Build_Windows_Binary
+  - Build_Linux_Binary
+
+  pool:
+    vmImage: 'windows-2019'
+
+  steps:
+    - task: DownloadBuildArtifacts@0
+      displayName: Download Linux executable
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'linExe'
+        downloadPath: '$(System.ArtifactsDirectory)'
+    
+    - task: DownloadBuildArtifacts@0
+      displayName: Download Windows executable
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'winExe'
+        downloadPath: '$(System.ArtifactsDirectory)'
