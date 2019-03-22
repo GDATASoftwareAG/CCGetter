@@ -20,7 +20,7 @@ jobs:
 
     - powershell: cp .\src\CCGetter\bin\Release\netcoreapp3.0\win-x64\native\CCGetter.exe $(Build.ArtifactStagingDirectory)
       displayName: Copy CCGetter.exe to "Artifacts Staging Directory"
-#
+
 - job: Build_Linux_Binary
 
   pool:
@@ -45,4 +45,7 @@ jobs:
 
     - script: '$HOME/dotnet/dotnet publish -r linux-x64 -c release'
       displayName: Build native Linux executable
+
+    - script: 'cp ./src/CCGetter/bin/Release/netcoreapp3.0/linux-x64/native/CCGetter $(Build.ArtifactStagingDirectory)'
+      displayName: Copy CCGetter to "Artifacts Staging Directory"
 
