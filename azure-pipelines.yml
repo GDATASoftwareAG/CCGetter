@@ -83,3 +83,13 @@ jobs:
         downloadType: 'single'
         artifactName: 'winExe'
         downloadPath: '$(System.ArtifactsDirectory)'
+
+    - task: GitHubRelease@0
+      displayName: Create GitHub Release
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      inputs:
+        gitHubConnection: 'CCGetterRelease'
+        repositoryName: 'GDATASoftwareAG/CCGetter'
+        title: 'CCGetter Release'
+        addChangeLog: false
+        assets: $(Build.ArtifactStagingDirectory)/*
