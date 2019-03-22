@@ -84,12 +84,6 @@ jobs:
         artifactName: 'winExe'
         downloadPath: '$(System.ArtifactsDirectory)'
 
-    - powershell: ls $(System.ArtifactsDirectory)/linExe
-      displayName: Show artifacts
-
-    - powershell: ls $(System.ArtifactsDirectory)/winExe
-      displayName: Show artifacts
-
     - task: GitHubRelease@0
       displayName: Create GitHub Release
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
