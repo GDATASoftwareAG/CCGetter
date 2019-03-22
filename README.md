@@ -38,3 +38,13 @@ CCGetter --help
 ## How to get credentials
 
 If you are interested in the data as a paid service or for evaluation purposes, please contact: info@gdata.de
+
+## Build & Release
+
+CCGetter is build with an [Azure Build Pipeline](https://dev.azure.com/gdatasoftware/CCGetter/_build?definitionId=3). If a tagged commit on the master branch is pushed to the origin, a new release to Github is triggered automatically. An example how to tag and push a commit is given below.
+
+Tag a release commit with: `git tag -a v1.0.0 -m "CertDump v1.0.0`.
+
+Push the tag to the origin: `git push origin v1.0.0`
+
+Replace the version number with the one to use.
