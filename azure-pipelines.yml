@@ -92,4 +92,4 @@ jobs:
         repositoryName: 'GDATASoftwareAG/CCGetter'
         title: 'CCGetter Release'
         addChangeLog: false
-        assets: $(Build.ArtifactStagingDirectory)/*
+        assets: $(System.ArtifactsDirectory)/*
