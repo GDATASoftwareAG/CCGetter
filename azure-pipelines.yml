@@ -84,6 +84,9 @@ jobs:
         artifactName: 'winExe'
         downloadPath: '$(System.ArtifactsDirectory)'
 
+    - powershell: ls $(System.ArtifactsDirectory)
+      displayName: Show artifacts
+      
     - task: GitHubRelease@0
       displayName: Create GitHub Release
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
@@ -92,4 +95,4 @@ jobs:
         repositoryName: 'GDATASoftwareAG/CCGetter'
         title: 'CCGetter Release'
         addChangeLog: false
-        assets: $(System.ArtifactsDirectory)/*
+        assets: '$(System.ArtifactsDirectory)/*'
